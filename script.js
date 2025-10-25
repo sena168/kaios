@@ -1,4 +1,8 @@
 console.log('Script loaded');
+const supabaseUrl = 'https://cjvjogqdfmprvrspyqcb.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNqdmpvZ3FkZm1wcnZyc3B5cWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE0MTU1NjYsImV4cCI6MjA3Njk5MTU2Nn0.q9bmpmT_cPy-JBElUbDv6Xb9AZCIsQ08XgkA6LiF_kk';
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
 document.addEventListener('DOMContentLoaded', () => {
     const cartToggle = document.getElementById('cart-toggle');
     const cart = document.getElementById('cart');
@@ -8,9 +12,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const addToCartButtons = document.querySelectorAll('.add-to-cart');
     console.log('addToCartButtons', addToCartButtons.length);
 
-    let cartData = JSON.parse(localStorage.getItem('cart')) || [];
+    let cartData = [];
 
-    function updateCart() {
+    async function updateCart() {
+        const { data, error } = await supabase.from('supabase-kaios-table1').select('*');
+        if (error) {
+            console.error('Error fetching cart:', error);
+            return;
+        }
+        cartData = data || [];
         cartItems.innerHTML = '';
         let total = 0;
         let itemCount = 0;
@@ -29,23 +39,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
         cartTotal.textContent = `Total: $${total.toFixed(2)}`;
         cartToggle.textContent = `Cart (${itemCount})`;
-
-        localStorage.setItem('cart', JSON.stringify(cartData));
     }
 
-    function addToCart(id, name, price) {
+    async function addToCart(id, name, price) {
         console.log('addToCart called with', id, name, price);
         const existingItem = cartData.find(item => item.id === id);
-        if (existingItem) {
-            existingItem.quantity++;
-        } else {
-            cartData.push({ id, name, price: parseFloat(price), quantity: 1 });
+        const quantity = existingItem ? existingItem.quantity + 1 : 1;
+        const { error } = await supabase.from('supabase-kaios-table1').upsert({
+            id,
+            name,
+            price: parseFloat(price),
+            quantity
+        });
+        if (error) {
+            console.error('Error adding to cart:', error);
         }
         updateCart();
     }
 
-    function removeFromCart(id) {
-        cartData = cartData.filter(item => item.id !== id);
+    async function removeFromCart(id) {
+        const { error } = await supabase.from('supabase-kaios-table1').delete().eq('id', id);
+        if (error) {
+            console.error('Error removing from cart:', error);
+        }
         updateCart();
     }
 
@@ -55,19 +71,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     addToCartButtons.forEach(button => {
         console.log('Attaching event listener to button', button.dataset.id);
-        button.addEventListener('click', () => {
+        button.addEventListener('click', async () => {
             const id = button.dataset.id;
             const name = button.dataset.name;
             const price = button.dataset.price;
             console.log('Button clicked', id);
-            addToCart(id, name, price);
+            await addToCart(id, name, price);
         });
     });
 
-    cartItems.addEventListener('click', (e) => {
+    cartItems.addEventListener('click', async (e) => {
         if (e.target.classList.contains('remove-item')) {
             const id = e.target.dataset.id;
-            removeFromCart(id);
+            await removeFromCart(id);
         }
     });
 

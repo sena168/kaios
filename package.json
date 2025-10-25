@@ -1,0 +1,14 @@
+{
+  "name": "clothing-store",
+  "version": "1.0.0",
+  "description": "A clothing store website for t-shirts",
+  "main": "index.html",
+  "scripts": {
+    "dev": "killport 5555 && http-server -p 5555"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "killport": "^1.0.2",
+    "http-server": "^14.1.1"
+  }
+}

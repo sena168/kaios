@@ -31,8 +31,7 @@ if you need any credentials or key always check external-notes and then apply to
 
 B UNFINISHED PROMPT:
 
-1. connect database to supabase for database, as usual check external-notes for credentials
-2. automate development script in package.json so that 'npm run dev' automatically kill port 5555 and rerun the app there, install killport to make it easier
+1. automate development script in package.json so that 'npm run dev' automatically kill port 5555 and rerun the app there, install killport to make it easier
 
 C FINISHED PROMPT:
 
@@ -40,3 +39,4 @@ C FINISHED PROMPT:
 2. create a clothing store website that sells tshirts and has cart
 3. gitignore externals folder
 4. create a website for selling tshirt complete with cart
+5. connect database to supabase for database, as usual check external-notes for credentials
