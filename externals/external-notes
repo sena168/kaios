@@ -6,3 +6,16 @@ suhuac3ng@gmail.com
 
 github user.email
 sena168
+
+supabase
+project url
+https://cjvjogqdfmprvrspyqcb.supabase.co
+
+api key anon public
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNqdmpvZ3FkZm1wcnZyc3B5cWNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE0MTU1NjYsImV4cCI6MjA3Njk5MTU2Nn0.q9bmpmT_cPy-JBElUbDv6Xb9AZCIsQ08XgkA6LiF_kk
+
+table
+supabase-kaios-table1
+
+direct connection url
+postgresql://postgres:Supabase!68168@db.cjvjogqdfmprvrspyqcb.supabase.co:5432/postgres
